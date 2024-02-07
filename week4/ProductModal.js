@@ -1,13 +1,28 @@
 export default {
   props: ["tempProduct", "updateProduct"],
+  data() {
+    return {
+      modalProduct: null,
+    };
+  },
+  methods: {
+    openModal() {
+      this.modalProduct.show();
+    },
+    closeModal() {
+      this.modalProduct.hide();
+    },
+  },
+  mounted() {
+    this.modalProduct = new bootstrap.Modal(this.$refs.productModal);
+  },
   template: `<div
   id="productModal"
   ref="productModal"
   class="modal fade"
   tabindex="-1"
   aria-labelledby="productModalLabel"
-  aria-hidden="true"
->
+  aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content border-0">
       <div class="modal-header bg-dark text-white">
@@ -44,11 +59,11 @@ export default {
                 :key="key"
               >
                 <div class="mb-3">
-                  <label :for="`imagesUrl${key}`" class="form-label"
+                  <label :for="image+key" class="form-label"
                     >圖片網址</label
                   >
                   <input
-                    :id="`imagesUrl${key}`"
+                    :id="image+key"
                     v-model="tempProduct.imagesUrl[key]"
                     type="text"
                     class="form-control"
@@ -209,4 +224,4 @@ export default {
     </div>
   </div>
 </div>`,
-}
+};

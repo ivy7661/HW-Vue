@@ -17,7 +17,8 @@ createApp({
     };
   },
   mounted() {
-    this.modalProduct = new bootstrap.Modal(this.$refs.productModal);
+    // 這行拿掉移去內層使用
+    // this.modalProduct = new bootstrap.Modal(this.$refs.productModal);
     this.delModalProduct = new bootstrap.Modal(this.$refs.delProductModal);
 
     // 取出 Token
@@ -70,7 +71,9 @@ createApp({
         .then((response) => {
           alert(response.data.message);
           this.getData();
-          this.modalProduct.hide();
+          // this.modalProduct.hide();
+          this.$refs.pModal.closeModal();
+
           // this.tempProduct = {};
         })
         .catch((err) => {
@@ -84,15 +87,17 @@ createApp({
           imagesUrl: [],
         };
         this.isNew = true;
-        this.modalProduct.show();
+        // this.modalProduct.show();
+        this.$refs.pModal.openModal();
       } else if (status === "edit") {
         this.tempProduct = { ...item };
         this.tempProduct.imagesUrl = [];
         this.isNew = false;
-        this.modalProduct.show();
+        // this.modalProduct.show();
+        this.$refs.pModal.openModal();
       } else if (status === "delete") {
         this.tempProduct = { ...item };
-        this.delModalProduct.show();
+        // this.delModalProduct.show();
       }
     },
 

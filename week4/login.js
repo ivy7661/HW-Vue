@@ -22,7 +22,7 @@ createApp({
           document.cookie = `hexVueToken=${token}; expires=${new Date(
             expired
           )}`;
-          window.location = "week3-index.html";
+          window.location = "week4-index.html";
         })
         .catch((error) => {
           console.dir(error);

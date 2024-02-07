@@ -1,6 +1,6 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
 
-const url = "https://ec-course-api.hexschool.io/v2";
+const site = "https://ec-course-api.hexschool.io/v2";
 
 createApp({
   data() {
@@ -14,7 +14,7 @@ createApp({
   methods: {
     login() {
       axios
-        .post(`${url}/admin/signin`, this.user)
+        .post(`${site}/admin/signin`, this.user)
         .then((res) => {
           console.log(res);
           const { token, expired } = res.data;
@@ -22,6 +22,7 @@ createApp({
           document.cookie = `hexVueToken=${token}; expires=${new Date(
             expired
           )}`;
+          // // P.S:若取回的expired為10碼請自行*1000
           window.location = "week2-index.html";
         })
         .catch((error) => {

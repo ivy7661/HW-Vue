@@ -1,8 +1,5 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
 
-let productModal = null;
-let delProductModal = null;
-
 createApp({
   data() {
     return {
@@ -11,26 +8,21 @@ createApp({
       site: "https://vue3-course-api.hexschool.io/v2",
       apiPath: "js23",
       products: [],
-      isNew: false,
       tempProduct: {
         imagesUrl: [],
       },
+      // 用空字串""也可以
+      // 這兩個是待會要拿來裝 modal 的
+      modalProduct: null,
+      delModalProduct: null,
+      isNew: false,
     };
   },
   mounted() {
-    productModal = new bootstrap.Modal(
-      document.getElementById("productModal"),
-      {
-        keyboard: false,
-      }
-    );
-
-    delProductModal = new bootstrap.Modal(
-      document.getElementById("delProductModal"),
-      {
-        keyboard: false,
-      }
-    );
+    // 建立一個給 新增、編輯 使用的Modal
+    this.modalProduct = new bootstrap.Modal(this.$refs.productModal);
+    // 建立給刪除使用的Modal
+    this.delModalProduct = new bootstrap.Modal(this.$refs.delProductModal);
 
     // 取出 Token
     const token = document.cookie.replace(
@@ -73,6 +65,7 @@ createApp({
       //本方法綁在Modal下方確認按鈕上
 
       // 預設url是新增產品
+      // 注意路徑的product沒有s
       let url = `${this.site}/api/${this.apiPath}/admin/product`;
       let http = "post";
 
@@ -87,8 +80,9 @@ createApp({
       axios[http](url, { data: this.tempProduct })
         .then((response) => {
           alert(response.data.message);
-          productModal.hide();
           this.getData();
+          this.modalProduct.hide();
+          // this.tempProduct = {};
         })
         .catch((err) => {
           alert(err.response.data.message);
@@ -98,24 +92,24 @@ createApp({
     // status 用於判斷當前點擊的是 新增 / 編輯 / 刪除 按鈕
     // item 代表的是當前點擊的產品資料
     // 利用 if 判斷，若 status 為 ‘new’，表示點擊到新增按鈕，所以清空當前的 tempProduct 內容，並將 isNew 的值改為 true，最後再開啟 productModal
-    openModal(isNew, item) {
-      if (isNew === "new") {
-        // 是新的=>空的
+    // 把產品(item)也丟進來
+    openModal(status, item) {
+      if (status === "new") {
         this.tempProduct = {
           imagesUrl: [],
         };
-        this.isNew = true; // post 或 put
-        productModal.show();
-      } else if (isNew === "edit") {
-        // 若 status 為 ‘edit’，表示點擊到編輯按鈕，所以使用展開運算子 …item 將當前產品資料傳入 tempProduct，再將 isNew 的值改為 false，最後開啟 productModal
-        // 要編輯舊的=>複製
+        this.isNew = true;
+        this.modalProduct.show();
+      } else if (status === "edit") {
+        // tempProduct 內容是會變動的，這邊用淺拷貝複製一份過來
         this.tempProduct = { ...item };
+        // 這樣能確保無論它是否有資料，都能做新增圖片的行為
+        this.tempProduct.imagesUrl = [];
         this.isNew = false;
-        productModal.show();
-      } else if (isNew === "delete") {
-        // 若 status 為 ‘delete’，表示點擊到刪除按鈕，同樣使用展開運算子將產品資料傳入 tempProduct，用意是後續串接刪除 API 時，需要取得該產品的 id，最後開啟 delProductModal
+        this.modalProduct.show();
+      } else if (status === "delete") {
         this.tempProduct = { ...item };
-        delProductModal.show();
+        this.delModalProduct.show();
       }
     },
     // 刪除 API 需要取得對應產品 id 才能刪除，因為我們先前在 openModal 函式已經寫好，開啟刪除 Modal 時，就將當前產品資料傳入 tempProduct，所以這裡就可以直接使用 this.tempProduct.id 取得該產品 id，完成刪除產品功能
@@ -126,7 +120,7 @@ createApp({
         .delete(url)
         .then((response) => {
           alert(response.data.message);
-          delProductModal.hide();
+          this.delModalProduct.hide();
           this.getData();
         })
         .catch((err) => {

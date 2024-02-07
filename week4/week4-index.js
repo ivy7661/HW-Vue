@@ -1,6 +1,7 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
 import pagination from "./pagination.js";
 import ProductModal from "./ProductModal.js";
+import DelProductModal from "./DelProductModal.js";
 createApp({
   data() {
     return {
@@ -17,9 +18,9 @@ createApp({
     };
   },
   mounted() {
-    // 這行拿掉移去內層使用
+    // 這兩行拿掉移去內層使用
     // this.modalProduct = new bootstrap.Modal(this.$refs.productModal);
-    this.delModalProduct = new bootstrap.Modal(this.$refs.delProductModal);
+    // this.delModalProduct = new bootstrap.Modal(this.$refs.delProductModal);
 
     // 取出 Token
     const token = document.cookie.replace(
@@ -80,7 +81,7 @@ createApp({
           alert(err.response.data.message);
         });
     },
-
+    // 從這個方法，跳到 ref="pModal"，再去呼叫子元件的openModal()
     openModal(status, item) {
       if (status === "new") {
         this.tempProduct = {
@@ -97,7 +98,8 @@ createApp({
         this.$refs.pModal.openModal();
       } else if (status === "delete") {
         this.tempProduct = { ...item };
-        this.delModalProduct.show();
+        // this.delModalProduct.show();
+        this.$refs.delModal.openDelModal();
       }
     },
 
@@ -108,7 +110,8 @@ createApp({
         .delete(url)
         .then((response) => {
           alert(response.data.message);
-          this.delModalProduct.hide();
+          // this.delModalProduct.hide();
+          this.$refs.delModal.closeDelModal();
           this.getData();
         })
         .catch((err) => {
@@ -124,5 +127,6 @@ createApp({
   components: {
     pagination,
     ProductModal,
+    DelProductModal,
   },
 }).mount("#app");

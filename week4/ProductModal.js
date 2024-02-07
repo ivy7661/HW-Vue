@@ -7,7 +7,7 @@ export default {
   },
   methods: {
     openModal() {
-      this.modalProduct.show();
+      this.modalProduct.show(); // 使用元件內的$refs
     },
     closeModal() {
       this.modalProduct.hide();

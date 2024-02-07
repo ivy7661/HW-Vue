@@ -97,7 +97,7 @@ createApp({
         this.$refs.pModal.openModal();
       } else if (status === "delete") {
         this.tempProduct = { ...item };
-        // this.delModalProduct.show();
+        this.delModalProduct.show();
       }
     },
 

@@ -1,5 +1,5 @@
 export default {
-  props: ["delProduct"],
+  props: ["tempProduct", "delProduct"],
   data() {
     return {
       delModalProduct: null,
@@ -15,6 +15,7 @@ export default {
   },
   mounted() {
     this.delModalProduct = new bootstrap.Modal(this.$refs.delProductModal);
+    // console.log("我是刪除元件");
   },
   template: `<div
   id="delProductModal"

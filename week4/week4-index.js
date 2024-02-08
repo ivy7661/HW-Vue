@@ -1,7 +1,7 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
 import pagination from "./pagination.js";
 import ProductModal from "./ProductModal.js";
-import DelProductModal from "./DelProductModal.js";
+import DelProductmodal from "./DelProductmodal.js";
 createApp({
   data() {
     return {
@@ -127,6 +127,6 @@ createApp({
   components: {
     pagination,
     ProductModal,
-    DelProductModal,
+    DelProductmodal,
   },
 }).mount("#app");

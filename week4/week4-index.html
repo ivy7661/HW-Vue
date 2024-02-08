@@ -78,10 +78,11 @@
 
       <!-- 把這個modal區塊用ref標記 -->
       <!-- DelProductModal -->
-      <DelProductModal
+      <Del-Productmodal
+        :temp-product="tempProduct"
         :del-product="delProduct"
         ref="delModal"
-      ></DelProductModal>
+      ></Del-Productmodal>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>

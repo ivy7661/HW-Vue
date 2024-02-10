@@ -1,5 +1,5 @@
 export default {
-  props: ["tempProduct", "updateProduct"],
+  props: ["tempProduct", "updateProduct", "isNew"],
   data() {
     return {
       modalProduct: null, //用來裝新增、編輯的 modal,就是 template中ref="productModal"的div元素，也就是這整個modal區塊 (在mounted)

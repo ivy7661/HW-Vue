@@ -30,6 +30,8 @@
         <div class="mt-4">
           <!-- 產品Modal -->
 
+          <!-- 產品Modal -->
+
           <table class="table align-middle">
             <thead>
               <tr>
@@ -112,7 +114,7 @@
                 <th></th>
                 <th>品名</th>
                 <th style="width: 180px">數量/單位</th>
-                <th class="text-end">小計</th>
+                <th>單價</th>
               </tr>
             </thead>
             <tbody>
@@ -134,10 +136,7 @@
                 </td>
                 <td>
                   {{ cart.product.title }}
-                  <!-- 優惠券 -->
-                  <div class="text-success" v-if="cart.coupon">
-                    已套用優惠券
-                  </div>
+                  <div class="text-success">已套用優惠券</div>
                 </td>
                 <td>
                   <div class="input-group input-group-sm">
@@ -205,8 +204,8 @@
                   </div>
                 </td>
                 <td class="text-end">
-                  <small class="text-success"></small>
-                  {{ cart.final_total }}
+                  <small class="text-success">折扣價：</small>
+                  {{ cart.total }}
                 </td>
               </tr>
               <!-- </template> -->
@@ -214,25 +213,18 @@
             <tfoot>
               <tr>
                 <td colspan="3" class="text-end">總計</td>
-                <td class="text-end">{{ carts.total}}</td>
+                <td class="text-end">{{ carts.final_total}}</td>
               </tr>
-              <!-- 折扣 -->
-
-              <tr v-if="carts.final_total !== carts.total">
+              <tr>
                 <td colspan="3" class="text-end text-success">折扣價</td>
-                <td class="text-end text-success">{{ carts.final_total }}</td>
+                <td class="text-end text-success">{{ }}</td>
               </tr>
             </tfoot>
           </table>
         </div>
         <!-- 驗證 -->
         <div class="my-5 row justify-content-center">
-          <v-form
-            ref="form"
-            class="col-md-6"
-            v-slot="{ errors }"
-            @submit="createOrder"
-          >
+          <v-form ref="form" class="col-md-6" v-slot="{ errors }">
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
               <v-field
@@ -242,8 +234,6 @@
                 class="form-control"
                 :class="{ 'is-invalid': errors['email'] }"
                 placeholder="請輸入 Email"
-                rules="email|required"
-                v-model="form.user.email"
               ></v-field>
               <error-message
                 name="email"
@@ -261,7 +251,6 @@
                 :class="{ 'is-invalid': errors['姓名'] }"
                 placeholder="請輸入姓名"
                 rules="required"
-                v-model="form.user.name"
               ></v-field>
               <error-message
                 name="姓名"
@@ -278,8 +267,6 @@
                 class="form-control"
                 :class="{ 'is-invalid': errors['電話'] }"
                 placeholder="請輸入電話"
-                rules="required|min:8|max:10"
-                v-model="form.user.tel"
               ></v-field>
               <error-message
                 name="電話"
@@ -297,7 +284,6 @@
                 :class="{ 'is-invalid': errors['地址'] }"
                 placeholder="請輸入地址"
                 rules="required"
-                v-model="form.user.address"
               ></v-field>
               <error-message
                 name="地址"
@@ -307,13 +293,12 @@
 
             <div class="mb-3">
               <label for="message" class="form-label">留言</label>
-              <v-field
+              <textarea
                 id="message"
                 class="form-control"
                 cols="30"
                 rows="10"
-                as="textarea"
-              ></v-field>
+              ></textarea>
             </div>
             <div class="text-end">
               <button type="submit" class="btn btn-danger">送出訂單</button>

@@ -1,21 +1,4 @@
 import { createApp } from "https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.15/vue.esm-browser.min.js";
-const { defineRule, Form, Field, ErrorMessage, configure } = VeeValidate;
-const { required, email, min, max } = VeeValidateRules;
-const { localize, loadLocaleFromURL } = VeeValidateI18n;
-
-defineRule("required", required);
-defineRule("email", email);
-defineRule("min", min);
-defineRule("max", max);
-
-loadLocaleFromURL(
-  "https://unpkg.com/@vee-validate/i18n@4.1.0/dist/locale/zh_TW.json"
-);
-
-configure({
-  generateMessage: localize("zh_TW"),
-});
-
 const apiUrl = "https://ec-course-api.hexschool.io/v2";
 const apiPath = "js23";
 
@@ -25,6 +8,15 @@ const userModal = {
     return {
       productModal: null,
       qty: 1,
+      form: {
+        user: {
+          name: "",
+          email: "",
+          tel: "",
+          address: "",
+        },
+        message: "",
+      },
     };
   },
   mounted() {
@@ -36,6 +28,20 @@ const userModal = {
     },
     close() {
       this.productModal.hide();
+    },
+    createOrder() {
+      const url = `${apiUrl}/api/${apiPath}/order`;
+      const order = this.form;
+      axios
+        .post(url, { data: order })
+        .then((res) => {
+          alert(res.data.message);
+          this.$refs.form.resetForm(); //VeeValidate 提供的方法
+          this.getCart();
+        })
+        .catch((err) => {
+          alert(err.response.data.message);
+        });
     },
   },
   watch: {
@@ -57,22 +63,7 @@ const app = createApp({
         cartQtyLoading: "",
       },
       carts: {},
-      form: {
-        user: {
-          name: "",
-          email: "",
-          tel: "",
-          address: "",
-        },
-        message: "",
-      },
     };
-  },
-  components: {
-    userModal,
-    VForm: Form,
-    VField: Field,
-    ErrorMessage: ErrorMessage,
   },
   mounted() {
     this.getProducts();
@@ -142,20 +133,9 @@ const app = createApp({
         // this.$refs.userModal.close();
       });
     },
-    createOrder() {
-      const url = `${apiUrl}/api/${apiPath}/order`;
-      const order = this.form;
-      axios
-        .post(url, { data: order })
-        .then((res) => {
-          alert(res.data.message);
-          this.$refs.form.resetForm(); //VeeValidate 提供的方法
-          this.getCart();
-        })
-        .catch((err) => {
-          alert(err.data.message);
-        });
-    },
+  },
+  components: {
+    userModal,
   },
 });
 

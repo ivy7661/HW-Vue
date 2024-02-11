@@ -1,19 +1,16 @@
 import { createApp } from "https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.15/vue.esm-browser.min.js";
-const { defineRule, Form, Field, ErrorMessage, configure } = VeeValidate;
-const { required, email, min, max } = VeeValidateRules;
-const { localize, loadLocaleFromURL } = VeeValidateI18n;
-
-defineRule("required", required);
-defineRule("email", email);
-defineRule("min", min);
-defineRule("max", max);
-
-loadLocaleFromURL(
-  "https://unpkg.com/@vee-validate/i18n@4.1.0/dist/locale/zh_TW.json"
+Object.keys(VeeValidateRules).forEach((rule) => {
+  if (rule !== "default") {
+    VeeValidate.defineRule(rule, VeeValidateRules[rule]);
+  }
+});
+VeeValidateI18n.loadLocaleFromURL(
+  "https://unpkg.com/@vee-validate/i18n@4.12.4/dist/locale/zh_TW.json"
 );
 
-configure({
-  generateMessage: localize("zh_TW"),
+VeeValidate.configure({
+  generateMessage: VeeValidateI18n.localize("zh_TW"),
+  validateOnInput: true,
 });
 
 const apiUrl = "https://ec-course-api.hexschool.io/v2";
@@ -70,9 +67,9 @@ const app = createApp({
   },
   components: {
     userModal,
-    VForm: Form,
-    VField: Field,
-    ErrorMessage: ErrorMessage,
+    // VForm: Form,
+    // VField: Field,
+    // ErrorMessage: ErrorMessage,
   },
   mounted() {
     this.getProducts();
@@ -158,5 +155,7 @@ const app = createApp({
     },
   },
 });
-
+app.component("VForm", VeeValidate.Form);
+app.component("VField", VeeValidate.Field);
+app.component("ErrorMessage", VeeValidate.ErrorMessage);
 app.mount("#app");

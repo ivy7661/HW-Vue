@@ -1,4 +1,4 @@
-import { createApp } from "https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.15/vue.esm-browser.min.js";
+// import { createApp } from "https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.15/vue.esm-browser.min.js"; // 因為沒有支援 ESM
 const { defineRule, Form, Field, ErrorMessage, configure } = VeeValidate;
 const { required, email, min, max } = VeeValidateRules;
 const { localize, loadLocaleFromURL } = VeeValidateI18n;
@@ -47,7 +47,7 @@ const userModal = {
   template: `#userProductModal`,
 };
 
-const app = createApp({
+const app = Vue.createApp({
   data() {
     return {
       products: [],

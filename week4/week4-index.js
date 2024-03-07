@@ -122,6 +122,19 @@ createApp({
       this.tempProduct.imagesUrl = [];
       this.tempProduct.imagesUrl.push("");
     },
+    uploadImg(index, event) {
+      const file = event.target.files[0];
+      const formData = new FormData();
+      formData.append("file-to-upload", file);
+      axios
+        .post(`${this.site}/api/${this.apiPath}/admin/upload`, formData)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    },
   },
   // 區域註冊
   components: {

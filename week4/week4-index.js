@@ -122,10 +122,14 @@ createApp({
       this.tempProduct.imagesUrl = [];
       this.tempProduct.imagesUrl.push("");
     },
-    uploadImg(index, event) {
-      const file = event.target.files[0];
+    uploadImg(event) {
+      console.log(event.target[1].files[0]);
+      const file = event.target[0].files[0];
+      const file2 = event.target[1].files[0];
+
       const formData = new FormData();
       formData.append("file-to-upload", file);
+      formData.append("file-to-upload-2", file2);
       axios
         .post(`${this.site}/api/${this.apiPath}/admin/upload`, formData)
         .then((res) => {

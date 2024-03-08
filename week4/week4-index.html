@@ -74,9 +74,17 @@
           <form
             enctype="multipart/form-data"
             method="post"
-            @submit="uploadImg(index, $event)"
+            @submit.prevent="uploadImg($event)"
           >
+            <h5>圖片一</h5>
             <input type="file" name="file-to-upload" />
+            <br />
+            <br />
+            <br />
+            <h5>圖片二</h5>
+            <input type="file" name="file-to-upload-2" />
+            <br />
+            <br />
             <input type="submit" value="Upload" />
           </form>
         </section>

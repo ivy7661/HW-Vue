@@ -123,7 +123,7 @@ createApp({
       this.tempProduct.imagesUrl.push("");
     },
     uploadImg(event) {
-      console.log(event.target[1].files[0]);
+      // console.log(event.target[1].files[0]);
       const file = event.target[0].files[0];
       const file2 = event.target[1].files[0];
 
